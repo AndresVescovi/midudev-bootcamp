@@ -7,6 +7,7 @@ const   WarningNoUsed=()=>{
     return <h2>Todavia no se uso el contador</h2>
 }
 const ListOfCliks=({clicks})=>{
+    debugger;
     return <p>{clicks.join(",")}</p>
 }
 
@@ -29,7 +30,7 @@ const [clicks, setClicks] = useState([])
         clicks: counters.clicks +1
     }
   setCounters(newCountersState)
-  setClicks((prevClicks)=> [...prevClicks,"R"])
+  setClicks((prevClicks)=> [...prevClicks,"L"])
   }
 
   const handleClickRigth = () =>{
