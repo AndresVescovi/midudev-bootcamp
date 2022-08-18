@@ -1,19 +1,16 @@
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Note } from './Note'
-
+import {create as createNote, getAll as getAllNotes} from './servicios/notes/index'
 
 function App() {
 const [notes, setNotes] = useState([])
 const [newNote, setNewNote] = useState('')
 
 useEffect(() => {
-  fetch('https://jsonplaceholder.typicode.com/posts')
-  .then(response => response.json())
-  .then(json => {
-    setNotes(json)
-  })
-
+getAllNotes().then((note) => {
+  setNotes(notes)
+})
 }, [])
 
 
@@ -22,13 +19,23 @@ const handleChange = (event)=>{
 }
 const handleSubmit = (event)=>{
   event.preventDefault()
+
   console.log('crear notas')
-  const noteToAddToState = {
-      id: notes.length + 1,
+const noteToAddToState = {
       title: newNote,
       body: newNote,
-      important: Math.random < 0.5
+      userId: 1
   }
+
+createNote(noteToAddToState)
+  .then(newNote => {
+    setNotes((prevNotes => prevNotes.concat(newNote)))
+  })
+
+
+
+  
+ 
   console.log(noteToAddToState)
  
   setNotes(notes.concat(noteToAddToState))
