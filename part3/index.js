@@ -1,25 +1,24 @@
-const { json } = require("express")
-const express = require("express")
-
+const express = require('express')
 const app = express()
 
 /* const http = require('http') */
+app.use(express.json())
 
- let notes = [
-   { "id": 1,
-    "content":"me tengo que cosinar",
-    "date":"2022-08-19",
-    "important" :true
+let notes = [
+    { 'id': 1,
+        'content':'me tengo que cosinar',
+        'date':'2022-08-19',
+        'important' :true
     },
-    { "id": 2,
-    "content":"tengo que aprender js y node",
-    "date":"2022-08-19",
-    "important":true
+    { 'id': 2,
+        'content':'tengo que aprender js y node',
+        'date':'2022-08-19',
+        'important':true
     },
-    { "id": 3,
-    "content":"repasar node y js",
-    "date":"2022-08-19",
-    "important":false
+    { 'id': 3,
+        'content':'repasar node y js',
+        'date':'2022-08-19',
+        'important':false
     },
 ] 
 
@@ -49,10 +48,35 @@ app.get('/api/notes/:id', (req, res) =>{
 })
 app.delete('/api/notes/:id', (req, res) =>{
     const id = Number(req.params.id)
-   notes = notes.filter(note => note.id !== id )
-   res.status(204).end()
+    notes = notes.filter(note => note.id !== id )
+    res.status(204).end()
    
 })
+
+app.post('/api/notes', (req, res) =>{
+    const note = req.body
+    console.log(note)
+
+    const ids = notes.map(note => note.id)
+    const maxId =   Math.max(...ids)
+
+    const newNote = {
+        id: maxId + 1,
+        content: note.content,
+        important: typeof note.important !== 'undefined'? note.important : false,
+        date: new Date().toISOString()
+    }
+
+    notes = [...notes, newNote]
+   
+
+    res.json(note)   
+
+
+})
+
+
+
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
